@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SSIM / LPIPS scatter plot with hover</title>
+    <style>
+        body {
+            margin: 0;
+            background: #fff;
+        }
+
+        #tooltip {
+            position: absolute;
+            text-align: center;
+            width: 120px;
+            height: auto;
+            padding: 8px;
+            font: 12px sans-serif;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        svg {
+            display: block;
+            width: 100%;
+        }
+
+        .axis-label,
+        .tick-label {
+            fill: #000;
+            font-size: 12px;
+            font-family: sans-serif;
+        }
+
+        .error {
+            padding: 16px;
+            color: #a00;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart"></div>
+    <div id="tooltip"></div>
+
+    <script>
+        var myImg = "113590013.png";
+        var margin = {top: 20, right: 30, bottom: 50, left: 60};
+        var outerWidth = 1080;
+        var outerHeight = 580;
+        var width = outerWidth - margin.left - margin.right;
+        var height = outerHeight - margin.top - margin.bottom;
+        var xDomain = [0.2, 1];
+        var yDomain = [0, 0.7];
+        var svgNS = "http://www.w3.org/2000/svg";
+        var xlinkNS = "http://www.w3.org/1999/xlink";
+        var embeddedCsv = `Student,LPIPS,SSIM
+113590013.png,0.0,1.0
+113590006.png,0.45614248514175415,0.32933283497882987
+113590059.png,0.47110113501548767,0.34716502653315173
+113590049.png,0.47913241386413574,0.32939762646644327
+113590002.png,0.48072364926338196,0.41470323433101675
+113590018.png,0.48275992274284363,0.34961301272633444
+112590058.jpg,0.482795387506485,0.25464791364610306
+113590008.png,0.4900972545146942,0.27319838608185143
+113590042.png,0.49649304151535034,0.3761393852484832
+113590011.png,0.4979068338871002,0.3421837658179624
+113590023.png,0.498129278421402,0.3154965259709866
+113590045.png,0.5046882629394531,0.36048072853350055
+113590062.png,0.5071024298667908,0.3167323735483127
+112590452.png,0.507548451423645,0.3899592876532989
+113590036.png,0.5121933221817017,0.37890852263891867
+111590455.png,0.51933753490448,0.3170555460744569
+113590052.png,0.5205074548721313,0.403296347802032
+110590455.png,0.5217430591583252,0.4015522074990552
+113590050.png,0.5235744714736938,0.3209000291917878
+113AC1012.png,0.5237632989883423,0.38250119134990035
+112590454.png,0.523817777633667,0.36165505826576255
+113590028.png,0.5240957736968994,0.3329834417323046
+113AB0018.png,0.5243601202964783,0.3588009665481134
+113590015.png,0.5261160135269165,0.38294091930816154
+113590051.png,0.5287628173828125,0.4088238538386333
+113590056.png,0.5299622416496277,0.4163245537477982
+114054809.png,0.5323275923728943,0.38199739804628025
+111590028.png,0.5325124859809875,0.41886734991685987
+113590003.png,0.5338727831840515,0.3900493298795895
+113590031.png,0.534146249294281,0.391865099197945
+113590057.png,0.5343791246414185,0.3587502020459774
+111590047.png,0.5345155596733093,0.39455735805412356
+113590039.png,0.535350501537323,0.396788537284782
+113370239.png,0.5355413556098938,0.39742960094105323
+113590001.png,0.5375919342041016,0.33959932205481586
+112590040.png,0.5386137366294861,0.35125237944434506
+113590044.png,0.5387842655181885,0.3415842747902118
+112590455.png,0.5389970541000366,0.3808564620064721
+113590026.png,0.540334939956665,0.3972863042315117
+113590061.png,0.5431895852088928,0.37572146937444073
+111590062.png,0.5566834211349487,0.3677005993915335
+113590021.png,0.5573846101760864,0.37511326255935307
+113590022.png,0.5598006844520569,0.3748793242602801
+113590033.png,0.5614266395568848,0.39086391207345855
+113590060.png,0.5628595948219299,0.4005662870214959
+113590032.png,0.5688866972923279,0.3995622347689557
+113590010.png,0.5764668583869934,0.3769661997150655
+113590047.png,0.5842586755752563,0.4264169183209254
+113590005.png,0.5886508822441101,0.41620012708377685
+113590040.png,0.5992597341537476,0.37472360536673605
+113590004.png,0.6018326878547668,0.4138236352424999
+113590043.png,0.6088913679122925,0.43319982948784
+113590025.png,0.6113294363021851,0.4279197307374919
+111590042.png,0.6342613101005554,0.4410111180230428`;
+
+        function parseCsv(text) {
+            var lines = text.trim().split(/\r?\n/);
+            var headers = lines.shift().split(",");
+            return lines.map(function(line) {
+                var cells = line.split(",");
+                var row = {};
+                headers.forEach(function(header, index) {
+                    row[header] = cells[index];
+                });
+                row.LPIPS = Number(row.LPIPS);
+                row.SSIM = Number(row.SSIM);
+                return row;
+            });
+        }
+
+        function xScale(value) {
+            return ((value - xDomain[0]) / (xDomain[1] - xDomain[0])) * width;
+        }
+
+        function yScale(value) {
+            return height - ((value - yDomain[0]) / (yDomain[1] - yDomain[0])) * height;
+        }
+
+        function makeSvgElement(name, attrs) {
+            var el = document.createElementNS(svgNS, name);
+            Object.keys(attrs || {}).forEach(function(key) {
+                if (key === "href") {
+                    el.setAttributeNS(xlinkNS, "href", attrs[key]);
+                } else {
+                    el.setAttribute(key, attrs[key]);
+                }
+            });
+            return el;
+        }
+
+        function addText(parent, text, attrs) {
+            var el = makeSvgElement("text", attrs);
+            el.textContent = text;
+            parent.appendChild(el);
+            return el;
+        }
+
+        function drawAxis(group) {
+            group.appendChild(makeSvgElement("line", {
+                x1: 0, y1: height, x2: width, y2: height,
+                stroke: "#000", "stroke-width": 1
+            }));
+            group.appendChild(makeSvgElement("line", {
+                x1: 0, y1: 0, x2: 0, y2: height,
+                stroke: "#000", "stroke-width": 1
+            }));
+
+            for (var x = 0.2; x <= 1.0001; x += 0.1) {
+                var px = xScale(x);
+                group.appendChild(makeSvgElement("line", {
+                    x1: px, y1: height, x2: px, y2: height + 6,
+                    stroke: "#000", "stroke-width": 1
+                }));
+                addText(group, x.toFixed(1), {
+                    class: "tick-label", x: px, y: height + 22,
+                    "text-anchor": "middle"
+                });
+            }
+
+            for (var y = 0; y <= 0.7001; y += 0.05) {
+                var py = yScale(y);
+                group.appendChild(makeSvgElement("line", {
+                    x1: -6, y1: py, x2: 0, y2: py,
+                    stroke: "#000", "stroke-width": 1
+                }));
+                addText(group, y.toFixed(2), {
+                    class: "tick-label", x: -10, y: py + 4,
+                    "text-anchor": "end"
+                });
+            }
+
+            addText(group, "SSIM", {
+                class: "axis-label", x: width, y: height - 40,
+                "text-anchor": "end"
+            });
+            addText(group, "LPIPS", {
+                class: "axis-label", x: 36, y: -30,
+                transform: "rotate(90)", "text-anchor": "start"
+            });
+        }
+
+        function showTooltip(event, d) {
+            var tooltip = document.getElementById("tooltip");
+            tooltip.innerHTML =
+                "<div style='margin-bottom:5px; font-weight:bold; font-size:1.1em;'>" + d.Student + "</div>" +
+                "<img src='img/" + d.Student + "' alt='Handwriting' style='width:100%; height:auto; border:1px solid #ccc;'>";
+            tooltip.style.opacity = "0.95";
+
+            var rect = tooltip.getBoundingClientRect();
+            tooltip.style.left = (event.pageX - rect.width - 8) + "px";
+            tooltip.style.top = (event.pageY - rect.height - 8) + "px";
+        }
+
+        function hideTooltip() {
+            document.getElementById("tooltip").style.opacity = "0";
+        }
+
+        function draw(data) {
+            var filtered = data.filter(function(d) {
+                return d.SSIM >= xDomain[0] && d.SSIM <= xDomain[1] && d.LPIPS >= yDomain[0] && d.LPIPS <= yDomain[1];
+            });
+            var svg = makeSvgElement("svg", {
+                viewBox: "0 0 " + outerWidth + " " + outerHeight
+            });
+            var group = makeSvgElement("g", {
+                transform: "translate(" + margin.left + "," + margin.top + ")"
+            });
+
+            svg.appendChild(group);
+            drawAxis(group);
+
+            filtered.forEach(function(d) {
+                var node = makeSvgElement("g", {
+                    class: "node",
+                    transform: "translate(" + xScale(d.SSIM) + "," + yScale(d.LPIPS) + ")",
+                    style: "cursor:pointer"
+                });
+
+                node.appendChild(makeSvgElement("rect", {
+                    width: 36,
+                    height: 36,
+                    x: -18,
+                    y: -18,
+                    fill: "rgba(0,0,0,0)",
+                    stroke: d.Student === myImg ? "#ff0000" : "#187C19",
+                    "stroke-width": 2
+                }));
+                node.appendChild(makeSvgElement("image", {
+                    href: "img/" + d.Student,
+                    x: -17,
+                    y: -17,
+                    width: 34,
+                    height: 34,
+                    style: "pointer-events:none"
+                }));
+
+                node.addEventListener("mouseover", function(event) {
+                    showTooltip(event, d);
+                });
+                node.addEventListener("mousemove", function(event) {
+                    showTooltip(event, d);
+                });
+                node.addEventListener("mouseout", hideTooltip);
+                group.appendChild(node);
+            });
+
+            document.getElementById("chart").appendChild(svg);
+        }
+
+        fetch("results.csv")
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error("results.csv load failed: " + response.status);
+                }
+                return response.text();
+            })
+            .then(function(text) {
+                draw(parseCsv(text));
+            })
+            .catch(function(error) {
+                draw(parseCsv(embeddedCsv));
+            });
+    </script>
+</body>
+</html>

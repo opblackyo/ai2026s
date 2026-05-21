@@ -141,10 +141,6 @@
     <div class="col twenty"><a href="../hw04/index.html">04</a></div>
     <div class="col twenty"><a href="../hw05/index.html">05</a></div>
     <div class="col twenty"><a href="../hw06/index.html">06</a></div>
-    <div class="col twenty"><a href="../hw06/index.html">07</a></div>
-    <div class="col twenty"><a href="../hw06/index.html">08</a></div>
-    <div class="col twenty"><a href="../hw06/index.html">09</a></div>
-    <div class="col twenty"><a href="../hw06/index.html">10</a></div>
   </div>
 
   <!-- ------------------------------------------------>
@@ -157,7 +153,7 @@
   <!-- ------------------------------------------------>
   <div class="row hw12">
     <div class="col-md-12 twenty">
-      心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。
+      這是字體生成最後一項作業，我們要比較大家字體的相似度，分別使用 LPIPS 和 SSIM 這兩個指標。選用「秋」這個字，將自己寫的「秋」對全班每個寫的「秋」作比較，看到圖表的繪製結果，可以知道自己的字和哪些同學的寫法和結構較為相近，是個有趣的實驗。
     </div>
   </div>
 
@@ -173,24 +169,24 @@
         </tr>
         <tr>
           <td rowspan="4" id="myTotal"></td>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox1"></td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox1" checked></td>
           <td id='m1'>4</td>
-          <td>Simple baseline - 描述</td>
+          <td>Simple baseline - 已計算自己與全班「秋」字的 LPIPS / SSIM，並上傳 results.csv</td>
         </tr>
         <tr>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox2"></td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox2" checked></td>
           <td id='m2'>4</td>
-          <td>Medium baseline - 描述</td>
+          <td>Medium baseline - 使用 D3.js 以散點圖呈現相似度比較結果</td>
         </tr>
         <tr>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox3"></td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox3" checked></td>
           <td id='m3'>2</td>
-          <td>Strong baseline - 描述</td>
+          <td>Strong baseline - 以 iframe 嵌入互動圖，滑鼠 hover 時顯示手寫字圖片與學號</td>
         </tr>
         <tr>
           <td><input type="checkbox" class="flipswitch" id="myCheckbox4" checked></td>
-          <td id='m4'>-10</td>
-          <td>沒有寫100字心得</td>
+          <td id='m4'>0</td>
+          <td>已撰寫 100 字心得</td>
         </tr>
 
       </table>
@@ -198,17 +194,55 @@
   </div>
 
   <!-- ------------------------------------------------>
-  <div class="row hw12 bottomrow">
+  <div class="row hw12">
     <div class="col-md-12 twenty">
-      <video id="video1" style="width:100%;max-width:100%;" controls="">
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-      </video>
+      <button type="button" onclick="location.href='https://drive.google.com/drive/folders/1fnne5G31725MxpTPT2OaBNRHSXx6Kzyx?usp=drive_link'">
+        前往「秋」資料夾
+      </button>
     </div>
   </div>
 
   <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty">
+      <span>CSV檔位置連結</span>
+      <br>
+      <button type="button" onclick="location.href='https://github.com/opblackyo/ai2026s/blob/main/hw04/results.csv'">
+        前往查看相似度比較結果
+      </button>
+      <div>已更新為自己的 GitHub results.csv 連結</div>
+    </div>
+  </div>
 
   <!-- ------------------------------------------------>
+  <div class="row hw12" align="center">
+    <div class="col-md-12 twenty">
+      <figcaption>SSIM / LPIPS - 互動式 D3.js</figcaption>
+      <iframe 
+          style="background-color: #fff; display: block;" 
+          src="hover.html?v=2" 
+          width="100%" 
+          height="720" 
+          frameborder="0" 
+          scrolling="no">
+      </iframe>
+    </div>
+  </div>
+  <!-- ------------------------------------------------>
+
+  <div class="row hw12 bottomrow">
+    <div class="col-md-12 twenty">
+      <h2>相似度觀察與心得</h2>
+      <p>
+        這次作業我以自己的「秋」字作為基準，使用 LPIPS 與 SSIM 比較全班同學的手寫字。
+        從 results.csv 可以看到，自己的圖片 113590013.png 與自己比較時 LPIPS 為 0、SSIM 為 1；
+        排除自己後，LPIPS 較低的 113590006.png、113590059.png、113590049.png 表示在感知特徵上較接近。
+        但 SSIM 較高的結果不一定完全相同，代表結構相似與深度特徵相似會從不同角度判斷字形。
+        我覺得這個實驗很有趣，因為手寫字不只是外框像不像，筆畫比例、重心、左右結構與細節都會影響分數。
+        透過散點圖與 hover 圖片對照，可以更直覺地看出哪些同學的「秋」字和我的字形風格比較接近。
+      </p>
+    </div>
+  </div>
 
 
 <script>
