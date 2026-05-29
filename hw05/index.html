@@ -15,7 +15,7 @@
 
 <title>作業五</title>
 <!-- https://alexlenail.me/NN-SVG/about.html -->
-<link rel="icon" href="../hw00/favicon.svg"/>
+<link rel="icon" href="https://lctung.github.io/ai2026s/hw00/favicon.svg">
 <style type="text/css">
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap');
 
@@ -134,6 +134,7 @@
 
   <!-- ---------------------------------------------- -->
   <div class="row hw12 toprow">
+    
     <div class="col twenty"><a href="../hw00/index.html">00</a></div>
     <div class="col twenty"><a href="../hw01/index.html">01</a></div>
     <div class="col twenty"><a href="../hw02/index.html">02</a></div>
@@ -141,10 +142,8 @@
     <div class="col twenty"><a href="../hw04/index.html">04</a></div>
     <div class="col twenty"><a href="../hw05/index.html">05</a></div>
     <div class="col twenty"><a href="../hw06/index.html">06</a></div>
-    <div class="col twenty"><a href="../hw06/index.html">07</a></div>
-    <div class="col twenty"><a href="../hw06/index.html">08</a></div>
-    <div class="col twenty"><a href="../hw06/index.html">09</a></div>
-    <div class="col twenty"><a href="../hw06/index.html">10</a></div>
+    
+
   </div>
 
   <!-- ------------------------------------------------>
@@ -157,7 +156,9 @@
   <!-- ------------------------------------------------>
   <div class="row hw12">
     <div class="col-md-12 twenty">
-      心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。心得報告 105 字。
+      本次作業是接觸文生圖的初步應用，使用的是目前提供個人使用功能最齊全的文生圖工具ComfyUI，
+      透過節點式的方式連接模塊，構建工作流並執行產生圖象，過程有趣且也能透過該過程理解模型運作
+      流程，最後根據主題成功生成芙莉蓮的相關圖像。
     </div>
   </div>
 
@@ -165,51 +166,102 @@
   <div class="row hw12">
     <div class="col-md-12 twenty">
       <table>
-        <tr>
+        <tbody><tr>
           <th>總分</th>
           <th>完成後打勾</th>
           <th>配分</th>
           <th>分項描述</th>
         </tr>
         <tr>
-          <td rowspan="4" id="myTotal"></td>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox1"></td>
-          <td id='m1'>4</td>
-          <td>Simple baseline - 描述</td>
+          <td rowspan="4" id="myTotal">10</td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox1" checked=""></td>
+          <td id="m1">4</td>
+          <td>Simple baseline - 完成ComfyUI建置</td>
         </tr>
         <tr>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox2"></td>
-          <td id='m2'>4</td>
-          <td>Medium baseline - 描述</td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox2" checked=""></td>
+          <td id="m2">4</td>
+          <td>Medium baseline - 完成芙莉蓮文生圖</td>
         </tr>
         <tr>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox3"></td>
-          <td id='m3'>2</td>
-          <td>Strong baseline - 描述</td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox3" checked=""></td>
+          <td id="m3">2</td>
+          <td>Strong baseline - 替換模型完成辛梅爾文生圖</td>
         </tr>
         <tr>
-          <td><input type="checkbox" class="flipswitch" id="myCheckbox4" checked></td>
-          <td id='m4'>-10</td>
+          <td><input type="checkbox" class="flipswitch" id="myCheckbox4"></td>
+          <td id="m4">-10</td>
           <td>沒有寫100字心得</td>
         </tr>
 
-      </table>
+      </tbody></table>
     </div>
   </div>
 
   <!-- ------------------------------------------------>
-  <div class="row hw12 bottomrow">
-    <div class="col-md-12 twenty">
-      <video id="video1" style="width:100%;max-width:100%;" controls="">
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-      </video>
+  <div class="row hw12">
+    <div class="col-md-12 twenty" style="background-color:#00AC48;">    
+      <figure>
+        <figcaption>ComfyUI+工作流</figcaption>
+            <img src="./files/ComfyUI.png" width="100%">
+        </figure>
     </div>
   </div>
 
   <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty" style="background-color:#ff0000;"> 
+      <figure>
+        <figcaption>完成芙莉蓮、欣梅爾Checkpoint文生圖</figcaption>
+        <a href="https://civitai.com/models/1188071/animagine-xl-40" >Checkpoint連結</a>
+        <p>1024 * 1280</p>
+        <p>masterpiece, best quality, high score, great score, absurdres, anime illustration,
+frieren, frieren \(sousou no frieren\), sousou no frieren, 1girl, solo,
+elf, pointy ears, white hair, long hair, twintails, green eyes, earrings,
+white capelet, striped shirt, fantasy outfit, calm expression, soft smile,
+upper body, flower field, blue sky, soft lighting, detailed eyes, clean lineart,
+beautiful composition;
+        </p>
+        <p>nsfw, lowres, bad anatomy, bad hands, bad fingers, missing fingers,
+extra fingers, extra digits, fewer digits, text, error, cropped, worst quality,
+low quality, normal quality, jpeg artifacts, signature, watermark, username,
+blurry, deformed face, mutated hands, extra arms, extra legs</p>
+        <img src="./files/HW05_frieren.png" width="100%">
+      </figure>
+    </div>
+  </div>
 
   <!-- ------------------------------------------------>
+  <div class="row hw12">
+    <div class="col-md-12 twenty" style="background-color:#7030a0;">    
+      <figure>
+        <figcaption>替換Ckeckpoint、LoRA完成欣梅爾文生圖</figcaption>
+            <a href="https://civitai.com/models/820208/obsession-illustrious-xl?modelVersionId=1494740" target="_blank">Checkpoint連結</a>
+        <br>
+        <a href="https://civitai.com/models/1204563/ma1ma1helmes-or-shiiros-styles-or-niji?modelVersionId=1356500" target="_blank">LoRA連結1</a>
+        <br>
+        <a href="https://civitai.com/models/1201355/r754496-or-shiiros-styles-or-niji" target="_blank">LoRA連結2</a>
+        <p>1024 * 1280</p>
+        <p>LoRA1 Strength : 0.5</p>
+        <p>LoRA2 Strength : 0.45</p>
+        <p>masterpiece, best quality, high score, great score, absurdres, anime illustration,
+himmel, himmel \(sousou no frieren\), sousou no frieren, 1boy, solo,
+male focus, young man, short light blue hair, blue eyes, hero, fantasy outfit,
+white cape, blue capelet, gentle smile, confident expression, upper body,
+outdoors, sunlight, fantasy town background, detailed eyes, clean lineart,
+beautiful composition, &lt;lora:ma1ma1helmes:0.5&gt;,&lt;lora:R754496:0.45&gt;</div>
+        </p>
+        <p>nsfw, lowres, bad anatomy, bad hands, bad fingers, missing fingers,
+extra fingers, extra digits, fewer digits, text, error, cropped, worst quality,
+low quality, normal quality, jpeg artifacts, signature, watermark, username,
+blurry, deformed face, mutated hands, extra arms, extra legs,
+1girl, girl, female, woman, long hair, dress, skirt</div>
+        <img src="./files/HW05_himme.png" width="100%">
+      </figure>
+    </div>
+  </div>
 
+  <!-- ------------------------------------------------>
 
 <script>
   $(function() {
@@ -254,5 +306,6 @@
   }
 </script>
 
-</body>
-</html>
+
+
+</div></body></html>
